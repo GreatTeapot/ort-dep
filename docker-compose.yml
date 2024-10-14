@@ -7,7 +7,7 @@ services:
     volumes:
       - static_data:/app/static
     ports:
-      - "2222:8000"
+      - "8000:8000"
     networks:
       - ort-network
     depends_on:
@@ -22,7 +22,7 @@ services:
     image: postgres:latest
     container_name: ort-postgres
     ports:
-      - "5444:5432"
+      - "5423:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
@@ -34,7 +34,7 @@ services:
   redis:
     image: redis:latest
     ports:
-      - "6333:6379"
+      - "6337:6379"
     networks:
       - ort-network
 
@@ -69,10 +69,10 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "80:80"
+      - "11:80"
     volumes:
-      - static_data:/var/www/ORT/static
-      - ./nginx/nginx-conf.d:/etc/nginx/conf.d
+      - static_data:/ORT/static
+      - ./nginx/default.conf:/etc/nginx/default.conf
     networks:
       - ort-network
     depends_on:

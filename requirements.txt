@@ -1,5 +1,5 @@
 amqp==5.2.0
-asgiref==3.7.2
+asgiref>=3.8.1,<4
 async-timeout==4.0.3
 attrs==23.2.0
 billiard==4.2.0
@@ -10,8 +10,8 @@ click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
 cron-descriptor==1.4.3
-Django==5.1-rc1
-django-celery-beat==2.6.0
+Django==5.1.1
+django-celery-beat==2.7.0
 django-celery-results==2.5.1
 django-cors-headers==4.3.1
 django-countries==7.6.1
@@ -28,7 +28,6 @@ djangorestframework-simplejwt==5.2.2
 drf-spectacular==0.27.0
 drf-spectacular-sidecar==2024.1.1
 exceptiongroup==1.2.2
-gunicorn==22.0.0
 hiredis==3.0.0
 inflection==0.5.1
 iniconfig==2.0.0
@@ -59,3 +58,4 @@ tzdata==2023.4
 uritemplate==4.1.1
 vine==5.1.0
 wcwidth==0.2.13
+gunicorn==23.0.0

@@ -6,7 +6,7 @@ from .models import CustomUser
 
 
 class UserSerializer(serializers.ModelSerializer):
-    location_country = serializers.CharField(source='get_location_country_display', allow_blank=True)  # Serialize country name
+    location_country = serializers.CharField(source='get_location_country_display', allow_blank=True)
 
     class Meta:
         model = CustomUser

@@ -20,8 +20,11 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-
+#
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -29,16 +32,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") == "True"
+DEBUG = os.environ.get("DEBUG") == "False"
 
 
 ALLOWED_HOSTS = ["94.241.141.190", "127.0.0.1", "localhost", "0.0.0.0"]
-
+JWT_ALGORITHM = os.getenv('JWT_ALGORITHM')
+ACCESS_TOKEN_LIFETIME = int(os.getenv('ACCESS_TOKEN_LIFETIME'))
+REFRESH_TOKEN_LIFETIME = int(os.getenv('REFRESH_TOKEN_LIFETIME'))
+SLIDING_TOKEN_LIFETIME = int(os.getenv('SLIDING_TOKEN_LIFETIME'))
 
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -150,9 +155,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "/staticfiles/"
+STATIC_URL = "/static/"
 # STATIC_ROOT = '/var/www/ORT/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type
@@ -191,12 +200,14 @@ SPECTACULAR_SETTINGS = {
 AUTH_USER_MODEL = 'regauth.CustomUser'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=40),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=14),
-    'SLIDING_TOKEN_LIFETIME': timedelta(days=14),
+    'AUTH_COOKIE': 'access_token',
+    'REFRESH_COOKIE': 'refresh_token',
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=ACCESS_TOKEN_LIFETIME),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=REFRESH_TOKEN_LIFETIME),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=SLIDING_TOKEN_LIFETIME),
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=SLIDING_TOKEN_LIFETIME),
     'ROTATE_REFRESH_TOKENS': False,
-    'ALGORITHM': 'HS256',
+    'ALGORITHM': JWT_ALGORITHM,
     'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': ('Bearer',),
@@ -225,18 +236,8 @@ SIMPLE_JWT = {
 #     },
 # ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# Адрес почтового сервера и порт
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587  # порт вашего почтового сервера (обычно 587 для TLS)
-
-# Используем TLS (если нужно)
-EMAIL_USE_TLS = True
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3030',
     'http://217.151.230.35',
@@ -266,7 +267,7 @@ CORS_ALLOW_HEADERS = [
     'user-agent',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['http://94.241.141.190/','http://127.0.0.1:8000/']
+CSRF_TRUSTED_ORIGINS = ['http://94.241.141.190/','http://127.0.0.1:8000/','http://127.0.0.1:2222/']
 
 # Celery
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
